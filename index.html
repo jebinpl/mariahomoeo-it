@@ -132,6 +132,7 @@ th{background:#eee}
         <input id="processor" placeholder="Processor" required>
         <input id="ram" placeholder="RAM" required>
         <input id="hdd" placeholder="HDD" required>
+        <input id="dept" placeholder="DEPARTMENT" required>
 
         <button type="submit">Save</button>
         <button type="button" onclick="closeForm()">Cancel</button>
@@ -147,6 +148,7 @@ th{background:#eee}
             <th>Processor</th>
             <th>RAM</th>
             <th>HDD</th>
+            <th>DEPARTMENT</th>
             <th>Date Created</th>
             <th>Action</th>
           </tr>
@@ -203,6 +205,7 @@ function addCPU(e){
     processor:processor.value,
     ram:ram.value,
     hdd:hdd.value,
+    dept:dept.value,
     date:new Date().toLocaleString()
   });
 
@@ -226,6 +229,7 @@ function render(){
         <td>${d.processor}</td>
         <td>${d.ram}</td>
         <td>${d.hdd}</td>
+        <td>${d.dept}</td>
         <td>${d.date}</td>
         <td>
           <button onclick="editCPU(${index})">✏️ Edit</button>
@@ -259,6 +263,7 @@ function editCPU(index){
   processor.value = cpu.processor;
   ram.value = cpu.ram;
   hdd.value = cpu.hdd;
+  dept.value = cpu.dept;
 
   // Temporarily override submit for editing
   cpuForm.onsubmit = function(e){
@@ -272,6 +277,7 @@ function editCPU(index){
       processor: processor.value,
       ram: ram.value,
       hdd: hdd.value,
+      dept: dept.value,
       date: new Date().toLocaleString()
     };
 
@@ -287,3 +293,4 @@ function editCPU(index){
 
 </body>
 </html>
+

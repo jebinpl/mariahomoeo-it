@@ -123,7 +123,7 @@ th{background:#eee}
       <h2>CPU Inventory</h2>
 
       <button onclick="openForm()">➕ Add CPU</button>
-
+<button onclick="exportCPUExcel()">📊 Export CPU Excel</button>
       <form id="cpuForm" class="hidden">
         <input id="brand" placeholder="Brand" required>
         <input id="serial" placeholder="Serial Number" required>
@@ -159,6 +159,7 @@ th{background:#eee}
 
   </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script>
 /* LOGIN */
@@ -289,8 +290,47 @@ function editCPU(index){
     cpuForm.onsubmit = addCPU;
   };
 }
+  function exportCPUExcel(){
+  if(data.length === 0){
+    alert("No CPU data to export!");
+    return;
+  }
+
+  let excelData = [];
+  excelData.push([
+    "Brand",
+    "Serial",
+    "MAC ID",
+    "Asset ID",
+    "Processor",
+    "RAM",
+    "HDD",
+    "Department",
+    "Date Created"
+  ]);
+
+  data.forEach(d => {
+    excelData.push([
+      d.brand,
+      d.serial,
+      d.mac,
+      d.asset,
+      d.processor,
+      d.ram,
+      d.hdd,
+      d.dept,
+      d.date
+    ]);
+  });
+
+  let wb = XLSX.utils.book_new();
+  let ws = XLSX.utils.aoa_to_sheet(excelData);
+  XLSX.utils.book_append_sheet(wb, ws, "CPU Inventory");
+  XLSX.writeFile(wb, "CPU_Inventory_Report.xlsx");
+}
 </script>
 
 </body>
 </html>
+
 

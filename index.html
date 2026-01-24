@@ -126,6 +126,7 @@ th{background:#eee}
       <button onclick="exportCPU()">📊 Export to Excel</button>
 
       <form id="cpuForm" class="hidden">
+        <input id="department" placeholder="Department" required>
         <input id="brand" placeholder="Brand" required>
         <input id="serial" placeholder="Serial Number" required>
         <input id="mac" placeholder="MAC ID" required>
@@ -141,6 +142,7 @@ th{background:#eee}
       <table>
         <thead>
           <tr>
+            <th>Department</th>
             <th>Brand</th>
             <th>Serial</th>
             <th>MAC ID</th>
@@ -163,14 +165,15 @@ th{background:#eee}
 
 <script>
 const USER="admin", PASS="admin123";
+let editIndex=null;
 
 function login(){
   if(username.value===USER && password.value===PASS){
     loginPage.classList.add("hidden");
     dashboard.classList.remove("hidden");
-    showCPU(); // ✅ AUTO OPEN CPU (FIX)
+    showCPU();
   }else{
-    alert("Invalid username or password");
+    alert("Invalid login");
     password.value="";
   }
 }
@@ -185,11 +188,17 @@ let data = JSON.parse(localStorage.getItem("cpuData")) || [];
 render();
 
 function openForm(){cpuForm.classList.remove("hidden")}
-function closeForm(){cpuForm.classList.add("hidden");cpuForm.reset()}
+function closeForm(){
+  cpuForm.classList.add("hidden");
+  cpuForm.reset();
+  editIndex=null;
+}
 
 cpuForm.onsubmit=function(e){
   e.preventDefault();
-  data.unshift({
+
+  const obj={
+    department:department.value,
     brand:brand.value,
     serial:serial.value,
     mac:mac.value,
@@ -198,17 +207,25 @@ cpuForm.onsubmit=function(e){
     ram:ram.value,
     hdd:hdd.value,
     date:new Date().toLocaleString()
-  });
+  };
+
+  if(editIndex===null){
+    data.unshift(obj);
+  }else{
+    data[editIndex]=obj;
+  }
+
   localStorage.setItem("cpuData",JSON.stringify(data));
   render();
   closeForm();
-}
+};
 
 function render(){
   cpuTable.innerHTML="";
   data.forEach((d,i)=>{
     cpuTable.innerHTML+=`
       <tr>
+        <td>${d.department}</td>
         <td>${d.brand}</td>
         <td>${d.serial}</td>
         <td>${d.mac}</td>
@@ -218,10 +235,25 @@ function render(){
         <td>${d.hdd}</td>
         <td>${d.date}</td>
         <td>
+          <button onclick="editCPU(${i})">✏️</button>
           <button onclick="deleteCPU(${i})">🗑️</button>
         </td>
       </tr>`;
   });
+}
+
+function editCPU(i){
+  const d=data[i];
+  department.value=d.department;
+  brand.value=d.brand;
+  serial.value=d.serial;
+  mac.value=d.mac;
+  asset.value=d.asset;
+  processor.value=d.processor;
+  ram.value=d.ram;
+  hdd.value=d.hdd;
+  editIndex=i;
+  openForm();
 }
 
 function deleteCPU(i){
@@ -234,8 +266,10 @@ function deleteCPU(i){
 
 function exportCPU(){
   if(!data.length){alert("No data");return;}
-  const sheet=[["Brand","Serial","MAC","Asset","Processor","RAM","HDD","Date"]];
-  data.forEach(d=>sheet.push([d.brand,d.serial,d.mac,d.asset,d.processor,d.ram,d.hdd,d.date]));
+  const sheet=[["Department","Brand","Serial","MAC","Asset","Processor","RAM","HDD","Date"]];
+  data.forEach(d=>sheet.push([
+    d.department,d.brand,d.serial,d.mac,d.asset,d.processor,d.ram,d.hdd,d.date
+  ]));
   const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(sheet),"CPU");
   XLSX.writeFile(wb,"CPU_Inventory.xlsx");

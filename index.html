@@ -164,20 +164,18 @@ th{background:#eee}
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script>
- const firebaseConfig = {
-  apiKey: "AIzaSyA1ymv16-dU8psCO-pIY0waY-Gkz3Mix9Q",
-  authDomain: "mariahomoeo-it.firebaseapp.com",
-  projectId: "mariahomoeo-it",
-  storageBucket: "mariahomoeo-it.firebasestorage.app",
-  messagingSenderId: "926576264951",
-  appId: "1:926576264951:web:fa8db2664622fb31ec75f2",
-  measurementId: "G-NM1FGJVBZK"
-};
-// Initialize Firebase (COMPAT way)
-firebase.initializeApp(firebaseConfig);
+   const firebaseConfig = {
+    apiKey: "AIzaSyA1ymv16-dU8psCO-pIY0waY-Gkz3Mix9Q",
+    authDomain: "mariahomoeo-it.firebaseapp.com",
+    projectId: "mariahomoeo-it",
+    storageBucket: "mariahomoeo-it.appspot.com",
+    messagingSenderId: "926576264951",
+    appId: "1:926576264951:web:fa8db2664622fb31ec75f2"
+  };
 
-// Initialize Firestore
-const db = firebase.firestore();
+  // ✅ CORRECT for compat
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
 
 /* LOGIN */
@@ -350,6 +348,7 @@ function editCPU(index){
 
 </body>
 </html>
+
 
 
 

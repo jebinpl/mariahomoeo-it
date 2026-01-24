@@ -6,8 +6,8 @@
 
 <style>
 body{margin:0;font-family:Arial,sans-serif}
-button{cursor:pointer;padding:6px 10px;margin-right:6px}
 .hidden{display:none}
+button{cursor:pointer}
 
 /* LOGIN */
 #loginPage{
@@ -123,7 +123,6 @@ th{background:#eee}
       <h2>CPU Inventory</h2>
 
       <button onclick="openForm()">➕ Add CPU</button>
-      <button onclick="exportCPU()">📊 Export to Excel</button>
 
       <form id="cpuForm" class="hidden">
         <input id="brand" placeholder="Brand" required>
@@ -155,95 +154,69 @@ th{background:#eee}
         <tbody id="cpuTable"></tbody>
       </table>
     </div>
+
   </div>
 </div>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-<!-- Excel Library -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
 <script>
-// 🔒 LOGIN
+/* LOGIN */
 const USER="admin", PASS="admin123";
+
 function login(){
   if(username.value===USER && password.value===PASS){
     loginPage.classList.add("hidden");
     dashboard.classList.remove("hidden");
-    showCPU();
   }else{
-    alert("Invalid username or password");
+    alert("❌ Invalid username or password");
     password.value="";
   }
 }
 function logout(){location.reload();}
+
+/* NAV */
 function showCPU(){
   welcomeText.style.display="none";
   cpuModule.classList.remove("hidden");
 }
 
-// 🔥 FIREBASE CONFIG
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+/* CPU LOGIC + STORAGE */
+let data = JSON.parse(localStorage.getItem("cpuData")) || [];
+render();
 
-// CPU LOGIC
-let editIndex = null;
-
-function openForm(){cpuForm.classList.remove("hidden")}
-function closeForm(){cpuForm.classList.add("hidden");cpuForm.reset()}
-
-// Load data from Firebase
-function loadCPU(){
-  db.collection("cpu").orderBy("date","desc").get().then(snapshot=>{
-    data=[];
-    snapshot.forEach(doc=>data.push({...doc.data(), id: doc.id}));
-    render();
-  });
+function openForm(){
+  cpuForm.classList.remove("hidden");
+}
+function closeForm(){
+  cpuForm.classList.add("hidden");
+  cpuForm.reset();
 }
 
-let data=[];
-
-// Add / Edit CPU
-cpuForm.onsubmit=function(e){
+// Default add CPU function
+function addCPU(e){
   e.preventDefault();
-  const cpuData={
-    brand: brand.value,
-    serial: serial.value,
-    mac: mac.value,
-    asset: asset.value,
-    processor: processor.value,
-    ram: ram.value,
-    hdd: hdd.value,
-    date: new Date().toLocaleString()
-  };
-  if(editIndex!==null){
-    const id = data[editIndex].id;
-    db.collection("cpu").doc(id).set(cpuData).then(()=>{
-      editIndex=null;
-      closeForm();
-      loadCPU();
-    });
-  }else{
-    db.collection("cpu").add(cpuData).then(()=>{
-      closeForm();
-      loadCPU();
-    });
-  }
+
+  data.unshift({
+    brand:brand.value,
+    serial:serial.value,
+    mac:mac.value,
+    asset:asset.value,
+    processor:processor.value,
+    ram:ram.value,
+    hdd:hdd.value,
+    date:new Date().toLocaleString()
+  });
+
+  localStorage.setItem("cpuData", JSON.stringify(data));
+  render();
+  closeForm();
 }
+
+cpuForm.onsubmit = addCPU;
 
 // Render table
 function render(){
   cpuTable.innerHTML="";
-  data.forEach((d,i)=>{
+  data.forEach((d, index) => {
     cpuTable.innerHTML+=`
       <tr>
         <td>${d.brand}</td>
@@ -255,48 +228,61 @@ function render(){
         <td>${d.hdd}</td>
         <td>${d.date}</td>
         <td>
-          <button onclick="editCPU(${i})">✏️</button>
-          <button onclick="deleteCPU(${i})">🗑️</button>
+          <button onclick="editCPU(${index})">✏️ Edit</button>
+          <button onclick="deleteCPU(${index})">🗑️ Delete</button>
         </td>
-      </tr>
-    `;
+      </tr>`;
   });
 }
 
-// Edit CPU
-function editCPU(i){
-  editIndex=i;
-  const cpu=data[i];
-  brand.value=cpu.brand;
-  serial.value=cpu.serial;
-  mac.value=cpu.mac;
-  asset.value=cpu.asset;
-  processor.value=cpu.processor;
-  ram.value=cpu.ram;
-  hdd.value=cpu.hdd;
-  openForm();
-}
-
-// Delete CPU
-function deleteCPU(i){
-  if(confirm("Delete this CPU?")){
-    const id=data[i].id;
-    db.collection("cpu").doc(id).delete().then(loadCPU);
+// Delete function
+function deleteCPU(index){
+  if(confirm("Are you sure you want to delete this CPU?")){
+    data.splice(index, 1);
+    localStorage.setItem("cpuData", JSON.stringify(data));
+    render();
   }
 }
 
-// Export Excel
-function exportCPU(){
-  if(!data.length){alert("No data");return;}
-  const sheet=[["Brand","Serial","MAC","Asset","Processor","RAM","HDD","Date"]];
-  data.forEach(d=>sheet.push([d.brand,d.serial,d.mac,d.asset,d.processor,d.ram,d.hdd,d.date]));
-  const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(sheet),"CPU");
-  XLSX.writeFile(wb,"CPU_Inventory.xlsx");
-}
+// Edit function
+function editCPU(index){
+  const cpu = data[index];
 
-// Initial load
-loadCPU();
+  // Open form
+  openForm();
+
+  // Fill form with existing data
+  brand.value = cpu.brand;
+  serial.value = cpu.serial;
+  mac.value = cpu.mac;
+  asset.value = cpu.asset;
+  processor.value = cpu.processor;
+  ram.value = cpu.ram;
+  hdd.value = cpu.hdd;
+
+  // Temporarily override submit for editing
+  cpuForm.onsubmit = function(e){
+    e.preventDefault();
+
+    data[index] = {
+      brand: brand.value,
+      serial: serial.value,
+      mac: mac.value,
+      asset: asset.value,
+      processor: processor.value,
+      ram: ram.value,
+      hdd: hdd.value,
+      date: new Date().toLocaleString()
+    };
+
+    localStorage.setItem("cpuData", JSON.stringify(data));
+    render();
+    closeForm();
+
+    // Restore default addCPU behavior
+    cpuForm.onsubmit = addCPU;
+  };
+}
 </script>
 
 </body>

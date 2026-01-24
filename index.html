@@ -160,8 +160,23 @@ th{background:#eee}
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script>
+ const firebaseConfig = {
+  apiKey: "AIzaSyA1ymv16-dU8psCO-pIY0waY-Gkz3Mix9Q",
+  authDomain: "mariahomoeo-it.firebaseapp.com",
+  projectId: "mariahomoeo-it",
+  storageBucket: "mariahomoeo-it.firebasestorage.app",
+  messagingSenderId: "926576264951",
+  appId: "1:926576264951:web:fa8db2664622fb31ec75f2",
+  measurementId: "G-NM1FGJVBZK"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app); 
 /* LOGIN */
 const USER="admin", PASS="admin123";
 
@@ -332,5 +347,6 @@ function editCPU(index){
 
 </body>
 </html>
+
 
 

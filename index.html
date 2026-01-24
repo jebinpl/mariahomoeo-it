@@ -173,10 +173,13 @@ th{background:#eee}
   appId: "1:926576264951:web:fa8db2664622fb31ec75f2",
   measurementId: "G-NM1FGJVBZK"
 };
+// Initialize Firebase (COMPAT way)
+firebase.initializeApp(firebaseConfig);
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app); 
+// Initialize Firestore
+const db = firebase.firestore();
+
+
 /* LOGIN */
 const USER="admin", PASS="admin123";
 
@@ -347,6 +350,7 @@ function editCPU(index){
 
 </body>
 </html>
+
 
 
 

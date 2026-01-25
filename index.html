@@ -201,7 +201,7 @@ function showCPU(){
 
 /* CPU LOGIC + STORAGE */
 let data = [];
-
+let editId = null;
 // REAL-TIME GLOBAL LISTENER
 db.collection("cpu")
   .orderBy("createdAt", "desc")
@@ -240,7 +240,25 @@ function addCPU(e){
 
   closeForm();
 }
+// ✅ Firestore update function
+function updateCPU(e){
+  e.preventDefault();
 
+  db.collection("cpu").doc(editId).update({
+    brand: brand.value,
+    serial: serial.value,
+    mac: mac.value,
+    asset: asset.value,
+    processor: processor.value,
+    ram: ram.value,
+    hdd: hdd.value,
+    dept: dept.value
+  });
+
+  editId = null;
+  closeForm();
+  cpuForm.onsubmit = addCPU; // restore add mode
+}
 
 cpuForm.onsubmit = addCPU;
 
@@ -275,13 +293,13 @@ function deleteCPU(index){
 }
 
 // Edit function
+// Edit function (Firestore)
 function editCPU(index){
   const cpu = data[index];
+  editId = cpu.id;   // store Firestore document ID
 
-  // Open form
   openForm();
 
-  // Fill form with existing data
   brand.value = cpu.brand;
   serial.value = cpu.serial;
   mac.value = cpu.mac;
@@ -291,30 +309,9 @@ function editCPU(index){
   hdd.value = cpu.hdd;
   dept.value = cpu.dept;
 
-  // Temporarily override submit for editing
-  cpuForm.onsubmit = function(e){
-    e.preventDefault();
-
-    data[index] = {
-      brand: brand.value,
-      serial: serial.value,
-      mac: mac.value,
-      asset: asset.value,
-      processor: processor.value,
-      ram: ram.value,
-      hdd: hdd.value,
-      dept: dept.value,
-      date: new Date().toLocaleString()
-    };
-
-    
-    render();
-    closeForm();
-
-    // Restore default addCPU behavior
-    cpuForm.onsubmit = addCPU;
-  };
+  cpuForm.onsubmit = updateCPU;
 }
+
   function exportCPUExcel(){
   if(data.length === 0){
     alert("No CPU data to export!");
@@ -357,6 +354,7 @@ function editCPU(index){
 
 </body>
 </html>
+
 
 
 

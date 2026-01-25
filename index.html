@@ -199,8 +199,19 @@ function showCPU(){
 }
 
 /* CPU LOGIC + STORAGE */
-let data = JSON.parse(localStorage.getItem("cpuData")) || [];
-render();
+let data = [];
+
+// REAL-TIME GLOBAL LISTENER
+db.collection("cpu")
+  .orderBy("createdAt", "desc")
+  .onSnapshot(snapshot => {
+    data = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    render();
+  });
+
 
 function openForm(){
   cpuForm.classList.remove("hidden");
@@ -214,21 +225,24 @@ function closeForm(){
 function addCPU(e){
   e.preventDefault();
 
-  data.unshift({
-    brand:brand.value,
-    serial:serial.value,
-    mac:mac.value,
-    asset:asset.value,
-    processor:processor.value,
-    ram:ram.value,
-    hdd:hdd.value,
-    dept:dept.value,
-    date:new Date().toLocaleString()
+ function addCPU(e){
+  e.preventDefault();
+
+  db.collection("cpu").add({
+    brand: brand.value,
+    serial: serial.value,
+    mac: mac.value,
+    asset: asset.value,
+    processor: processor.value,
+    ram: ram.value,
+    hdd: hdd.value,
+    dept: dept.value,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
 
-  localStorage.setItem("cpuData", JSON.stringify(data));
-  render();
   closeForm();
+}
+
 }
 
 cpuForm.onsubmit = addCPU;
@@ -348,6 +362,7 @@ function editCPU(index){
 
 </body>
 </html>
+
 
 
 

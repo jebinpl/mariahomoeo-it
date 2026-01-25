@@ -107,7 +107,7 @@ th{background:#eee}
 
   <div class="nav-bar">
     <span class="nav-link" onclick="showCPU()">CPU</span>
-    <span class="nav-link">Projector</span>
+    <span class="nav-link" onclick="showProjector()">Projector</span>
     <span class="nav-link">Monitor</span>
     <span class="nav-link">Printer</span>
     <span class="nav-link">TV</span>
@@ -286,12 +286,13 @@ function render(){
   });
 }
 
-// Delete function
+// Delete CPU (Firestore)
 function deleteCPU(index){
   if(confirm("Are you sure you want to delete this CPU?")){
-   
+    db.collection("cpu").doc(data[index].id).delete();
   }
 }
+
 
 // Edit function
 // Edit function (Firestore)
@@ -355,6 +356,7 @@ function editCPU(index){
 
 </body>
 </html>
+
 
 
 

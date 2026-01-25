@@ -197,7 +197,14 @@ function logout(){location.reload();}
 /* NAV */
 function showCPU(){
   welcomeText.style.display="none";
+  projectorModule.classList.add("hidden");
   cpuModule.classList.remove("hidden");
+  
+}
+function showProjector(){
+  welcomeText.style.display = "none";
+  cpuModule.classList.add("hidden");
+  projectorModule.classList.remove("hidden");
 }
 
 /* CPU LOGIC + STORAGE */
@@ -358,6 +365,7 @@ function editCPU(index){
 
 </body>
 </html>
+
 
 
 

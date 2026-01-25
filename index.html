@@ -31,12 +31,31 @@ button{cursor:pointer}
   display:flex;
   align-items:center;
   padding:1px 20px;
+  position:relative;
 }
-.logo-left{height:80px;margin-right:20px}
-.header-text{flex:1;text-align:left}
-.header-text h1{font-size:52px;margin:0;letter-spacing:4px}
-.header-text p{margin:5px 0;font-size:18px}
-.header-text h2{margin-top:8px;font-size:30px}
+
+/* Left text */
+.header-left h1{
+  font-size:52px;
+  margin:0;
+  letter-spacing:4px;
+}
+.header-left p{
+  margin:5px 0;
+  font-size:18px;
+}
+
+/* Center title */
+.header-center{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+}
+.header-center h2{
+  margin:0;
+  font-size:30px;
+}
+
 
 /* NAV */
 .nav-bar{
@@ -97,13 +116,18 @@ th{background:#eee}
 <div id="dashboard" class="hidden">
 
   <div class="top-header">
-    <img src="logo.png" class="logo-left">
-    <div class="header-text">
-      <h1>MARIA</h1>
-      <p>Homoeopathic Medical College & Hospital</p>
-      <h2>IT Database</h2>
-    </div>
+  <img src="logo.png" class="logo-left">
+
+  <div class="header-left">
+    <h1>MARIA</h1>
+    <p>Homoeopathic Medical College & Hospital</p>
   </div>
+
+  <div class="header-center">
+    <h2>IT Database</h2>
+  </div>
+</div>
+
 
   <div class="nav-bar">
     <span class="nav-link" onclick="showCPU()">CPU</span>
@@ -365,6 +389,7 @@ function editCPU(index){
 <script src="projector.js"></script>
 </body>
 </html>
+
 
 
 

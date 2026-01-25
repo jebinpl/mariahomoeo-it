@@ -221,6 +221,8 @@ function openForm(){
 function closeForm(){
   cpuForm.classList.add("hidden");
   cpuForm.reset();
+    editId = null;
+  cpuForm.onsubmit = addCPU;
 }
 
 // Default add CPU function
@@ -343,7 +345,7 @@ function editCPU(index){
       d.ram,
       d.hdd,
       d.dept,
-      d.date
+      d.createdAt ? d.createdAt.toDate().toLocaleString() : ""
     ]);
   });
 
@@ -356,6 +358,7 @@ function editCPU(index){
 
 </body>
 </html>
+
 
 
 

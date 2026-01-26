@@ -136,7 +136,7 @@ th{background:#eee}
     <span class="nav-link" onclick="showCPU()">CPU</span>
     <span class="nav-link" onclick="showProjector()">Projector</span>
     <span class="nav-link">Monitor</span>
-    <span class="nav-link">Printer</span>
+    <span class="nav-link" onclick="showPrinter()">Printer</span>
     <span class="nav-link">TV</span>
     <span class="nav-link">DVR</span>
     <span class="nav-link">Accessories</span>
@@ -185,8 +185,12 @@ th{background:#eee}
         <tbody id="cpuTable"></tbody>
       </table>
     </div>
+    
 <!-- PROJECTOR MODULE -->
     <div id="projectorModule" class="hidden"></div>
+<!-- PRINTER MODULE -->
+    <div id="printerModule" class="hidden"></div>
+
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -226,15 +230,23 @@ function logout(){location.reload();}
 function showCPU(){
   welcomeText.style.display="none";
   projectorModule.classList.add("hidden");
+  printerModule.classList.add("hidden");
   cpuModule.classList.remove("hidden");
   
 }
 function showProjector(){
   welcomeText.style.display = "none";
   cpuModule.classList.add("hidden");
+  printerModule.classList.add("hidden");
   projectorModule.classList.remove("hidden");
 }
-
+function showPrinter(){
+  welcomeText.style.display = "none";
+  cpuModule.classList.add("hidden");
+  projectorModule.classList.add("hidden");
+  printerModule.classList.remove("hidden");
+}
+  
 /* CPU LOGIC + STORAGE */
 let data = [];
 let editId = null;
@@ -396,8 +408,10 @@ function editCPU(index){
 }
 </script>
 <script src="projector.js"></script>
+<script src="printer.js"></script>
 </body>
 </html>
+
 
 
 

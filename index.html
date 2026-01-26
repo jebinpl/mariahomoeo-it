@@ -161,7 +161,7 @@ th{background:#eee}
         <input id="ram" placeholder="RAM" required>
         <input id="hdd" placeholder="HDD" required>
         <input id="dept" placeholder="Department" required>
-        <input id="dept" placeholder="Division" required>
+        <input id="division" placeholder="Division" required>
         <button type="submit">Save</button>
         <button type="button" onclick="closeForm()">Cancel</button>
       </form>
@@ -273,7 +273,7 @@ function addCPU(e){
     ram: ram.value,
     hdd: hdd.value,
     dept: dept.value,
-    division: division.value
+    division: division.value,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
 
@@ -291,8 +291,8 @@ function updateCPU(e){
     processor: processor.value,
     ram: ram.value,
     hdd: hdd.value,
-    dept: dept.value
-    division: division.value
+    dept: dept.value,
+    division: division.value,
   });
 
   editId = null;
@@ -316,7 +316,7 @@ function render(){
         <td>${d.ram}</td>
         <td>${d.hdd}</td>
         <td>${d.dept}</td>
-        <td>$(d.division || ""}</td>
+        <td>${d.division || ""}</td>
         <td>${d.createdAt ? d.createdAt.toDate().toLocaleString() : ""}</td>
         <td>
           <button onclick="editCPU(${index})">✏️ Edit</button>
@@ -398,6 +398,7 @@ function editCPU(index){
 <script src="projector.js"></script>
 </body>
 </html>
+
 
 
 

@@ -211,21 +211,6 @@ th{background:#eee}
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-
-/* LOGIN */
-const USER="admin", PASS="admin123";
-
-function login(){
-  if(username.value===USER && password.value===PASS){
-    loginPage.classList.add("hidden");
-    dashboard.classList.remove("hidden");
-  }else{
-    alert("❌ Invalid username or password");
-    password.value="";
-  }
-}
-function logout(){location.reload();}
-
 /* NAV */
 function showCPU(){
   welcomeText.style.display="none";
@@ -410,8 +395,47 @@ function editCPU(index){
 <script src="projector.js"></script>
 <script src="printer.js"></script>
 <script src="sessionTimeout.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // ELEMENTS
+  const loginPage = document.getElementById("loginPage");
+  const dashboard = document.getElementById("dashboard");
+  const username = document.getElementById("username");
+  const password = document.getElementById("password");
+
+  const USER = "admin";
+  const PASS = "admin123";
+
+  // 🔑 AUTO LOGIN AFTER REFRESH
+  if (localStorage.getItem("loggedIn") === "true") {
+    loginPage.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+  }
+
+  window.login = function () {
+    if (username.value === USER && password.value === PASS) {
+      localStorage.setItem("loggedIn", "true");
+      localStorage.setItem("lastActivity", Date.now());
+
+      loginPage.classList.add("hidden");
+      dashboard.classList.remove("hidden");
+    } else {
+      alert("❌ Invalid username or password");
+      password.value = "";
+    }
+  };
+
+  window.logout = function () {
+    localStorage.clear();
+    location.reload();
+  };
+
+});
+</script>
 </body>
 </html>
+
 
 
 

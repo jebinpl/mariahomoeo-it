@@ -1,6 +1,6 @@
 // ===== Session Timeout (10 minutes) =====
 let idleTimer;
-const IDLE_LIMIT = 10 * 60 * 1000; // 10 minutes
+const IDLE_LIMIT = 02 * 60 * 1000; // 10 minutes
 
 function resetIdleTimer() {
   clearTimeout(idleTimer);
@@ -21,3 +21,4 @@ function logoutUser() {
 
 // Start timer when page loads
 resetIdleTimer();
+

@@ -52,12 +52,12 @@ const printStatus = document.getElementById("printStatus");
 const printerTable = document.getElementById("printerTable");
 
 // ===== Navigation =====
-function showPrinter() {
+/* function showPrinter() {
   welcomeText.style.display = "none";
   cpuModule.classList.add("hidden");
   projectorModule.classList.add("hidden");
   printerModule.classList.remove("hidden");
-}
+} */
 
 // ===== Form controls =====
 function openPrinterForm() {
@@ -195,3 +195,4 @@ function exportPrinterExcel() {
   XLSX.utils.book_append_sheet(wb, ws, "Printer Inventory");
   XLSX.writeFile(wb, "Printer_Inventory_Report.xlsx");
 }
+

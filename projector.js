@@ -14,11 +14,11 @@ projectorModule.innerHTML = `
 
   <form id="projectorForm" class="hidden">
     <input id="projBrand" placeholder="Brand" required>
-    <input id="projSerial" placeholder="Serial Number" required>
     <input id="projModel" placeholder="Model" required>
+    <input id="projSerial" placeholder="Serial Number" required>
     <input id="projDept" placeholder="Department" required>
+    <input id="projDivision" placeholder="Division" required>
     <input id="projStatus" placeholder="Status" required>
-
     <button type="submit">Save</button>
     <button type="button" onclick="closeProjectorForm()">Cancel</button>
   </form>
@@ -27,9 +27,10 @@ projectorModule.innerHTML = `
     <thead>
       <tr>
         <th>Brand</th>
-        <th>Serial Number</th>
         <th>Model</th>
+        <th>Serial Number</th>
         <th>Department</th>
+        <th>Division</th>
         <th>Status</th>
         <th>Date Created</th>
         <th>Action</th>
@@ -42,9 +43,10 @@ projectorModule.innerHTML = `
 // ===== Form & Fields =====
 const projectorForm = document.getElementById("projectorForm");
 const projBrand = document.getElementById("projBrand");
-const projSerial = document.getElementById("projSerial");
 const projModel = document.getElementById("projModel");
+const projSerial = document.getElementById("projSerial");
 const projDept = document.getElementById("projDept");
+const projDivision = document.getElementById("projDivision");
 const projStatus = document.getElementById("projStatus");
 const projectorTable = document.getElementById("projectorTable");
 
@@ -81,9 +83,10 @@ function addProjector(e) {
 
   db.collection("projectors").add({
     brand: projBrand.value,
-    serial: projSerial.value,
     model: projModel.value,
+    serial: projSerial.value,
     dept: projDept.value,
+    division: projDivision.value,
     status: projStatus.value,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
@@ -96,9 +99,10 @@ function updateProjector(e) {
 
   db.collection("projectors").doc(projectorEditId).update({
     brand: projBrand.value,
-    serial: projSerial.value,
     model: projModel.value,
+    serial: projSerial.value,
     dept: projDept.value,
+    division: projDivision.value,
     status: projStatus.value
   });
 
@@ -116,9 +120,10 @@ function renderProjectors() {
     projectorTable.innerHTML += `
       <tr>
         <td>${p.brand}</td>
-        <td>${p.serial}</td>
         <td>${p.model}</td>
+        <td>${p.serial}</td>
         <td>${p.dept}</td>
+        <td>${p.division || ""}</td>
         <td>${p.status}</td>
         <td>${p.createdAt ? p.createdAt.toDate().toLocaleString() : ""}</td>
         <td>
@@ -138,11 +143,11 @@ function editProjector(index) {
   openProjectorForm();
 
   projBrand.value = proj.brand;
-  projSerial.value = proj.serial;
   projModel.value = proj.model;
+  projSerial.value = proj.serial;
   projDept.value = proj.dept;
+  projDivision.value = proj.division || "";
   projStatus.value = proj.status;
-
   projectorForm.onsubmit = updateProjector;
 }
 
@@ -159,13 +164,14 @@ function exportProjectorExcel() {
     return;
   }
 
-  let excelData = [["Brand","Serial Number","Model","Department","Status","Date Created"]];
+  let excelData = [["Brand","Model","Serial Number","Department","Division","Status","Date Created"]];
   projectorData.forEach(p => {
     excelData.push([
       p.brand,
-      p.serial,
       p.model,
+      p.serial,
       p.dept,
+      p.division || "",
       p.status,
       p.createdAt ? p.createdAt.toDate().toLocaleString() : ""
     ]);
@@ -176,4 +182,5 @@ function exportProjectorExcel() {
   XLSX.utils.book_append_sheet(wb, ws, "Projector Inventory");
   XLSX.writeFile(wb, "Projector_Inventory_Report.xlsx");
 }
+
 

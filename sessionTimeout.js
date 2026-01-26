@@ -8,15 +8,10 @@ function resetIdleTimer() {
 }
 
 function logoutUser() {
-  alert("Session expired due to inactivity. Please login again.");
+  alert("⚠️ Session expired due to inactivity (10 minutes). Please login again.");
 
-  // 🔹 Firebase logout (if using auth)
-  firebase.auth().signOut().then(() => {
-    location.reload(); // or redirect to login page
-  });
-
-  // 🔹 If NOT using Firebase Auth, use this instead:
-  // location.href = "login.html";
+  localStorage.clear();   // clear login state
+  location.reload();      // return to login page
 }
 
 // Detect user activity
@@ -24,5 +19,5 @@ function logoutUser() {
   window.addEventListener(event, resetIdleTimer);
 });
 
-// Start timer on page load
+// Start timer when page loads
 resetIdleTimer();

@@ -160,8 +160,8 @@ th{background:#eee}
         <input id="processor" placeholder="Processor" required>
         <input id="ram" placeholder="RAM" required>
         <input id="hdd" placeholder="HDD" required>
-        <input id="dept" placeholder="DEPARTMENT" required>
-
+        <input id="dept" placeholder="Department" required>
+        <input id="dept" placeholder="Division" required>
         <button type="submit">Save</button>
         <button type="button" onclick="closeForm()">Cancel</button>
       </form>
@@ -176,7 +176,8 @@ th{background:#eee}
             <th>Processor</th>
             <th>RAM</th>
             <th>HDD</th>
-            <th>DEPARTMENT</th>
+            <th>Department</th>
+            <th>Division</th>
             <th>Date Created</th>
             <th>Action</th>
           </tr>
@@ -272,6 +273,7 @@ function addCPU(e){
     ram: ram.value,
     hdd: hdd.value,
     dept: dept.value,
+    division: division.value
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
 
@@ -290,6 +292,7 @@ function updateCPU(e){
     ram: ram.value,
     hdd: hdd.value,
     dept: dept.value
+    division: division.value
   });
 
   editId = null;
@@ -313,6 +316,7 @@ function render(){
         <td>${d.ram}</td>
         <td>${d.hdd}</td>
         <td>${d.dept}</td>
+        <td>$(d.division || ""}</td>
         <td>${d.createdAt ? d.createdAt.toDate().toLocaleString() : ""}</td>
         <td>
           <button onclick="editCPU(${index})">✏️ Edit</button>
@@ -346,7 +350,7 @@ function editCPU(index){
   ram.value = cpu.ram;
   hdd.value = cpu.hdd;
   dept.value = cpu.dept;
-
+  division.value = cpu.division || "";
   cpuForm.onsubmit = updateCPU;
 }
 
@@ -366,6 +370,7 @@ function editCPU(index){
     "RAM",
     "HDD",
     "Department",
+    "Division",
     "Date Created"
   ]);
 
@@ -379,6 +384,7 @@ function editCPU(index){
       d.ram,
       d.hdd,
       d.dept,
+      d.division || "",
       d.createdAt ? d.createdAt.toDate().toLocaleString() : ""
     ]);
   });
@@ -392,6 +398,7 @@ function editCPU(index){
 <script src="projector.js"></script>
 </body>
 </html>
+
 
 
 

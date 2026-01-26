@@ -49,11 +49,11 @@ const projStatus = document.getElementById("projStatus");
 const projectorTable = document.getElementById("projectorTable");
 
 // ===== Functions =====
-function showProjector() {
+/*function showProjector() {
   welcomeText.style.display = "none";
   cpuModule.classList.add("hidden");
   projectorModule.classList.remove("hidden");
-}
+}*/
 
 function openProjectorForm() {
   projectorForm.classList.remove("hidden");
@@ -176,3 +176,4 @@ function exportProjectorExcel() {
   XLSX.utils.book_append_sheet(wb, ws, "Projector Inventory");
   XLSX.writeFile(wb, "Projector_Inventory_Report.xlsx");
 }
+

@@ -197,7 +197,9 @@ function submitCPU(e){
   closeForm();
 }
 
-cpuForm.addEventListener("submit", submitCPU);
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("cpuForm").addEventListener("submit", submitCPU);
+});
 
 // RENDER TABLE
 function render(){
@@ -286,3 +288,4 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 </body>
 </html>
+

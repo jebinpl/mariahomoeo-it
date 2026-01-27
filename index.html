@@ -167,6 +167,8 @@ function showPrinter(){ welcomeText.style.display = "none"; cpuModule.classList.
 /* CPU LOGIC */
 let data = [];
 let editId = null;
+let cpuForm;
+
 
 // REAL-TIME GLOBAL LISTENER
 db.collection("cpu").orderBy("createdAt","desc").onSnapshot(snapshot=>{
@@ -257,8 +259,8 @@ document.addEventListener("DOMContentLoaded",()=>{
   const dashboard=document.getElementById("dashboard");
   const username=document.getElementById("username");
   const password=document.getElementById("password");
-  const cpuForm = document.getElementById("cpuForm");
-   cpuForm.addEventListener("submit", submitCPU);
+ cpuForm = document.getElementById("cpuForm");
+  cpuForm.addEventListener("submit", submitCPU);
   const USER="admin";
   const PASS="admin123";
 
@@ -288,5 +290,6 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 </body>
 </html>
+
 
 

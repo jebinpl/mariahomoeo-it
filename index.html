@@ -197,9 +197,7 @@ function submitCPU(e){
   closeForm();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("cpuForm").addEventListener("submit", submitCPU);
-});
+
 
 // RENDER TABLE
 function render(){
@@ -259,6 +257,8 @@ document.addEventListener("DOMContentLoaded",()=>{
   const dashboard=document.getElementById("dashboard");
   const username=document.getElementById("username");
   const password=document.getElementById("password");
+  const cpuForm = document.getElementById("cpuForm");
+   cpuForm.addEventListener("submit", submitCPU);
   const USER="admin";
   const PASS="admin123";
 
@@ -288,4 +288,5 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 </body>
 </html>
+
 

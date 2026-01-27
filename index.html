@@ -1,408 +1,288 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>IT Database</title>
-  <style>
-    body { margin: 0; font-family: Arial, sans-serif; }
-    .hidden { display: none; }
-    button { cursor: pointer; }
+<meta charset="UTF-8">
+<title>IT Database</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif}
+.hidden{display:none}
+button{cursor:pointer}
 
-    /* LOGIN */
-    #loginPage {
-      max-width: 320px;
-      margin: 150px auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      text-align: center;
-    }
-    #loginPage input {
-      width: 100%;
-      padding: 8px;
-      margin: 6px 0;
-      box-sizing: border-box; /* ✅ IMPORTANT */
-    }
+/* LOGIN */
+#loginPage{
+  max-width:320px;
+  margin:150px auto;
+  padding:20px;
+  border:1px solid #ccc;
+  text-align:center;
+}
+#loginPage input{
+  width:100%;
+  padding:8px;
+  margin:6px 0;
+  box-sizing:border-box;
+}
 
-    /* HEADER */
-    .top-header {
-      background: #9aa7a7;
-      color: white;
-      display: flex;
-      align-items: center;
-      padding: 1px 20px;
-      position: relative;
-    }
-    .logo-left {
-      height: 60px; /* adjust as needed */
-      margin-right: 20px;
-    }
-    .header-left h1 {
-      font-size: 52px;
-      margin: 0;
-      letter-spacing: 4px;
-    }
-    .header-left p {
-      margin: 5px 0;
-      font-size: 18px;
-    }
-    .header-center {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    .header-center h2 {
-      margin: 0;
-      font-size: 30px;
-    }
+/* HEADER */
+.top-header{
+  background:#9aa7a7;
+  color:white;
+  display:flex;
+  align-items:center;
+  padding:1px 20px;
+  position:relative;
+}
+.logo-left { height:60px; margin-right:20px; }
+.header-left h1{ font-size:52px; margin:0; letter-spacing:4px; }
+.header-left p{ margin:5px 0; font-size:18px; }
+.header-center{ position:absolute; left:50%; transform:translateX(-50%); }
+.header-center h2{ margin:0; font-size:30px; }
 
-    /* NAV */
-    .nav-bar {
-      background: #20f0e0;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-    }
-    .nav-link {
-      margin: 0 18px;
-      font-size: 18px;
-      cursor: pointer;
-    }
-    .logout {
-      margin-left: auto;
-      margin-right: 20px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+/* NAV */
+.nav-bar{
+  background:#20f0e0;
+  padding:10px;
+  display:flex;
+  align-items:center;
+}
+.nav-link{ margin:0 18px; font-size:18px; cursor:pointer; }
+.logout{ margin-left:auto; margin-right:20px; font-weight:bold; cursor:pointer; }
 
-    /* CONTENT */
-    #content { padding: 20px; }
+/* CONTENT */
+#content{padding:20px}
 
-    /* FORM */
-    form {
-      background: #f9f9f9;
-      padding: 15px;
-      margin: 10px 0;
-    }
-    input { padding: 6px; width: 100%; margin: 4px 0; }
+/* FORM */
+form{ background:#f9f9f9; padding:15px; margin:10px 0; }
+input{padding:6px;width:100%;margin:4px 0}
 
-    /* TABLE */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 6px;
-      text-align: center;
-    }
-    th { background: #eee; }
-  </style>
+/* TABLE */
+table{ width:100%; border-collapse:collapse; margin-top:10px; }
+th,td{ border:1px solid #ccc; padding:6px; text-align:center; }
+th{background:#eee}
+</style>
 </head>
 
 <body>
-  <!-- LOGIN -->
-  <div id="loginPage">
-    <h2>Login</h2>
-    <input id="username" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
-    <button onclick="login()">Login</button>
-  </div>
+<!-- LOGIN -->
+<div id="loginPage">
+  <h2>Login</h2>
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+</div>
 
-  <!-- DASHBOARD -->
-  <div id="dashboard" class="hidden">
-    <div class="top-header">
-      <img src="logo.png" class="logo-left">
-      <div class="header-left">
-        <h1>MARIA</h1>
-        <p>Homoeopathic Medical College & Hospital</p>
-      </div>
-      <div class="header-center">
-        <h2>IT Database Systems</h2>
-      </div>
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
+  <div class="top-header">
+    <img src="logo.png" class="logo-left">
+    <div class="header-left">
+      <h1>MARIA</h1>
+      <p>Homoeopathic Medical College & Hospital</p>
     </div>
-
-    <div class="nav-bar">
-      <span class="nav-link" onclick="showCPU()">CPU</span>
-      <span class="nav-link" onclick="showProjector()">Projector</span>
-      <span class="nav-link">Monitor</span>
-      <span class="nav-link" onclick="showPrinter()">Printer</span>
-      <span class="nav-link">TV</span>
-      <span class="nav-link">DVR</span>
-      <span class="nav-link">Accessories</span>
-      <span class="logout" onclick="logout()">Logout</span>
-    </div>
-
-    <div id="content">
-      <p id="welcomeText">Select a module from above.</p>
-
-      <!-- CPU MODULE -->
-      <div id="cpuModule" class="hidden">
-        <h2>CPU Inventory</h2>
-        <button onclick="openForm()">➕ Add CPU</button>
-        <button onclick="exportCPUExcel()">📊 Export CPU Excel</button>
-
-        <form id="cpuForm" class="hidden">
-          <input id="brand" placeholder="Brand" required>
-          <input id="serial" placeholder="Serial Number" required>
-          <input id="mac" placeholder="MAC ID" required>
-          <input id="asset" placeholder="Asset ID" required>
-          <input id="processor" placeholder="Processor" required>
-          <input id="ram" placeholder="RAM" required>
-          <input id="hdd" placeholder="HDD" required>
-          <input id="os" placeholder="OS" required>
-          <input id="ups" placeholder="UPS" required>
-          <input id="dept" placeholder="Department" required>
-          <input id="division" placeholder="Division" required>
-          <input id="status" placeholder="Status" required>
-          <button type="submit">Save</button>
-          <button type="button" onclick="closeForm()">Cancel</button>
-        </form>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Brand</th>
-              <th>Serial</th>
-              <th>MAC ID</th>
-              <th>Asset ID</th>
-              <th>Processor</th>
-              <th>RAM</th>
-              <th>HDD</th>
-              <th>OS</th>
-              <th>UPS</th>
-              <th>Department</th>
-              <th>Division</th>
-              <th>Status</th>
-              <th>Date Created</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="cpuTable"></tbody>
-        </table>
-      </div>
-
-      <!-- PROJECTOR MODULE -->
-      <div id="projectorModule" class="hidden"></div>
-      <!-- PRINTER MODULE -->
-      <div id="printerModule" class="hidden"></div>
+    <div class="header-center">
+      <h2>IT Database Systems</h2>
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <div class="nav-bar">
+    <span class="nav-link" onclick="showCPU()">CPU</span>
+    <span class="nav-link" onclick="showProjector()">Projector</span>
+    <span class="nav-link">Monitor</span>
+    <span class="nav-link" onclick="showPrinter()">Printer</span>
+    <span class="nav-link">TV</span>
+    <span class="nav-link">DVR</span>
+    <span class="nav-link">Accessories</span>
+    <span class="logout" onclick="logout()">Logout</span>
+  </div>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyA1ymv16-dU8psCO-pIY0waY-Gkz3Mix9Q",
-      authDomain: "mariahomoeo-it.firebaseapp.com",
-      projectId: "mariahomoeo-it",
-      storageBucket: "mariahomoeo-it.appspot.com",
-      messagingSenderId: "926576264951",
-      appId: "1:926576264951:web:fa8db2664622fb31ec75f2"
-    };
+  <div id="content">
+    <p id="welcomeText">Select a module from above.</p>
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    <!-- CPU MODULE -->
+    <div id="cpuModule" class="hidden">
+      <h2>CPU Inventory</h2>
+      <button onclick="openForm()">➕ Add CPU</button>
+      <button onclick="exportCPUExcel()">📊 Export CPU Excel</button>
 
-    /* NAV */
-    function showCPU() {
-      welcomeText.style.display = "none";
-      projectorModule.classList.add("hidden");
-      printerModule.classList.add("hidden");
-      cpuModule.classList.remove("hidden");
-    }
+      <form id="cpuForm" class="hidden">
+        <input id="brand" placeholder="Brand" required>
+        <input id="serial" placeholder="Serial Number" required>
+        <input id="mac" placeholder="MAC ID" required>
+        <input id="asset" placeholder="Asset ID" required>
+        <input id="processor" placeholder="Processor" required>
+        <input id="ram" placeholder="RAM" required>
+        <input id="hdd" placeholder="HDD" required>
+        <input id="os" placeholder="OS" required>
+        <input id="ups" placeholder="UPS" required>
+        <input id="dept" placeholder="Department" required>
+        <input id="division" placeholder="Division" required>
+        <input id="status" placeholder="Status" required>
+        <button type="submit">Save</button>
+        <button type="button" onclick="closeForm()">Cancel</button>
+      </form>
 
-    function showProjector() {
-      welcomeText.style.display = "none";
-      cpuModule.classList.add("hidden");
-      printerModule.classList.add("hidden");
-      projectorModule.classList.remove("hidden");
-    }
+      <table>
+        <thead>
+          <tr>
+            <th>Brand</th><th>Serial</th><th>MAC ID</th><th>Asset ID</th>
+            <th>Processor</th><th>RAM</th><th>HDD</th><th>OS</th>
+            <th>UPS</th><th>Department</th><th>Division</th><th>Status</th>
+            <th>Date Created</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="cpuTable"></tbody>
+      </table>
+    </div>
 
-    function showPrinter() {
-      welcomeText.style.display = "none";
-      cpuModule.classList.add("hidden");
-      projectorModule.classList.add("hidden");
-      printerModule.classList.remove("hidden");
-    }
+    <!-- PROJECTOR MODULE -->
+    <div id="projectorModule" class="hidden"></div>
 
-    /* CPU LOGIC */
-    let data = [];
-    let editId = null;
+    <!-- PRINTER MODULE -->
+    <div id="printerModule" class="hidden"></div>
 
-    db.collection("cpu")
-      .orderBy("createdAt", "desc")
-      .onSnapshot(snapshot => {
-        data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        render();
-      });
+  </div>
+</div>
 
-    function openForm() {
-      cpuForm.classList.remove("hidden");
-    }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-    function closeForm() {
-      cpuForm.classList.add("hidden");
-      cpuForm.reset();
-      editId = null;
-      cpuForm.onsubmit = addCPU;
-    }
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyA1ymv16-dU8psCO-pIY0waY-Gkz3Mix9Q",
+  authDomain: "mariahomoeo-it.firebaseapp.com",
+  projectId: "mariahomoeo-it",
+  storageBucket: "mariahomoeo-it.appspot.com",
+  messagingSenderId: "926576264951",
+  appId: "1:926576264951:web:fa8db2664622fb31ec75f2"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* NAV */
+function showCPU(){ welcomeText.style.display="none"; projectorModule.classList.add("hidden"); printerModule.classList.add("hidden"); cpuModule.classList.remove("hidden"); }
+function showProjector(){ welcomeText.style.display = "none"; cpuModule.classList.add("hidden"); printerModule.classList.add("hidden"); projectorModule.classList.remove("hidden"); }
+function showPrinter(){ welcomeText.style.display = "none"; cpuModule.classList.add("hidden"); projectorModule.classList.add("hidden"); printerModule.classList.remove("hidden"); }
+
+/* CPU LOGIC */
+let data = [];
+let editId = null;
+
+// REAL-TIME GLOBAL LISTENER
+db.collection("cpu").orderBy("createdAt","desc").onSnapshot(snapshot=>{
+  data = snapshot.docs.map(doc=>({id: doc.id,...doc.data()}));
+  render();
+});
+
+function openForm(){ cpuForm.classList.remove("hidden"); }
+function closeForm(){ cpuForm.classList.add("hidden"); cpuForm.reset(); editId=null; }
+
+// SINGLE FUNCTION FOR ADD/EDIT
 function submitCPU(e){
   e.preventDefault();
-
-  if (!cpuForm.reportValidity()) return;
+  if(!cpuForm.reportValidity()) return;
 
   const payload = {
-    brand: brand.value,
-    serial: serial.value,
-    mac: mac.value,
-    asset: asset.value,
-    processor: processor.value,
-    ram: ram.value,
-    hdd: hdd.value,
-    os: os.value,
-    ups: ups.value,
-    dept: dept.value,
-    division: division.value,
-    status: status.value
+    brand: brand.value, serial: serial.value, mac: mac.value, asset: asset.value,
+    processor: processor.value, ram: ram.value, hdd: hdd.value, os: os.value,
+    ups: ups.value, dept: dept.value, division: division.value, status: status.value
   };
 
-  if (editId) {
+  if(editId){
     db.collection("cpu").doc(editId).update(payload);
   } else {
-    db.collection("cpu").add({
-      ...payload,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+    db.collection("cpu").add({...payload, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
   }
 
   closeForm();
 }
 
-// Connect form submit to this single function
 cpuForm.addEventListener("submit", submitCPU);
-    
-    
 
-    function render() {
-      cpuTable.innerHTML = "";
-      data.forEach((d, index) => {
-        cpuTable.innerHTML += `
-          <tr>
-            <td>${d.brand}</td>
-            <td>${d.serial}</td>
-            <td>${d.mac}</td>
-            <td>${d.asset}</td>
-            <td>${d.processor}</td>
-            <td>${d.ram}</td>
-            <td>${d.hdd}</td>
-            <td>${d.os}</td>
-            <td>${d.ups}</td>
-            <td>${d.dept}</td>
-            <td>${d.division || ""}</td>
-            <td>${d.status || ""}</td>
-            <td>${d.createdAt ? d.createdAt.toDate().toLocaleString() : ""}</td>
-            <td>
-              <button onclick="editCPU(${index})">✏️ Edit</button>
-              <button onclick="deleteCPU(${index})">🗑️ Delete</button>
-            </td>
-          </tr>
-        `;
-      });
+// RENDER TABLE
+function render(){
+  cpuTable.innerHTML="";
+  data.forEach((d,index)=>{
+    cpuTable.innerHTML+=`<tr>
+      <td>${d.brand}</td><td>${d.serial}</td><td>${d.mac}</td><td>${d.asset}</td>
+      <td>${d.processor}</td><td>${d.ram}</td><td>${d.hdd}</td><td>${d.os}</td>
+      <td>${d.ups}</td><td>${d.dept}</td><td>${d.division||""}</td><td>${d.status||""}</td>
+      <td>${d.createdAt?d.createdAt.toDate().toLocaleString():""}</td>
+      <td>
+        <button onclick="editCPU(${index})">✏️ Edit</button>
+        <button onclick="deleteCPU(${index})">🗑️ Delete</button>
+      </td>
+    </tr>`;
+  });
+}
+
+// DELETE
+function deleteCPU(index){ 
+  if(confirm("Are you sure you want to delete this CPU?")){
+    db.collection("cpu").doc(data[index].id).delete();
+  }
+}
+
+// EDIT
+function editCPU(index){
+  const cpu = data[index];
+  editId = cpu.id;
+  openForm();
+  brand.value = cpu.brand; serial.value = cpu.serial; mac.value = cpu.mac; asset.value = cpu.asset;
+  processor.value = cpu.processor; ram.value = cpu.ram; hdd.value = cpu.hdd; os.value = cpu.os;
+  ups.value = cpu.ups; dept.value = cpu.dept; division.value = cpu.division||""; status.value = cpu.status||"";
+}
+
+/* EXPORT TO EXCEL */
+function exportCPUExcel(){
+  if(data.length===0){ alert("No CPU data to export!"); return; }
+  let excelData=[["Brand","Serial","MAC ID","Asset ID","Processor","RAM","HDD","OS","UPS","Department","Division","Status","Date Created"]];
+  data.forEach(d=>excelData.push([
+    d.brand,d.serial,d.mac,d.asset,d.processor,d.ram,d.hdd,d.os,d.ups,d.dept,d.division||"",d.status||"",d.createdAt?d.createdAt.toDate().toLocaleString():""
+  ]));
+  let wb=XLSX.utils.book_new();
+  let ws=XLSX.utils.aoa_to_sheet(excelData);
+  XLSX.utils.book_append_sheet(wb,ws,"CPU Inventory");
+  XLSX.writeFile(wb,"CPU_Inventory_Report.xlsx");
+}
+</script>
+
+<script src="projector.js"></script>
+<script src="printer.js"></script>
+<script src="sessionTimeout.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  const loginPage=document.getElementById("loginPage");
+  const dashboard=document.getElementById("dashboard");
+  const username=document.getElementById("username");
+  const password=document.getElementById("password");
+  const USER="admin";
+  const PASS="admin123";
+
+  if(localStorage.getItem("loggedIn")==="true"){
+    loginPage.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+  }
+
+  window.login=function(){
+    if(username.value===USER && password.value===PASS){
+      localStorage.setItem("loggedIn","true");
+      localStorage.setItem("lastActivity",Date.now());
+      loginPage.classList.add("hidden");
+      dashboard.classList.remove("hidden");
+    } else {
+      alert("❌ Invalid username or password");
+      password.value="";
     }
+  };
 
-    function deleteCPU(index) {
-      if (confirm("Are you sure you want to delete this CPU?")) {
-        db.collection("cpu").doc(data[index].id).delete();
-      }
-    }
+  window.logout=function(){
+    localStorage.clear();
+    location.reload();
+  };
+});
+</script>
 
-    function editCPU(index) {
-      const cpu = data[index];
-      editId = cpu.id;
-      openForm();
-      brand.value = cpu.brand;
-      serial.value = cpu.serial;
-      mac.value = cpu.mac;
-      asset.value = cpu.asset;
-      processor.value = cpu.processor;
-      ram.value = cpu.ram;
-      hdd.value = cpu.hdd;
-      os.value = cpu.os;
-      ups.value = cpu.ups;
-      dept.value = cpu.dept;
-      division.value = cpu.division || "";
-      status.value = cpu.status || "";
-      
-    }
-
-    function exportCPUExcel() {
-      if (data.length === 0) {
-        alert("No CPU data to export!");
-        return;
-      }
-
-      let excelData = [];
-      excelData.push([
-        "Brand", "Serial", "MAC ID", "Asset ID", "Processor", "RAM",
-        "HDD", "OS", "UPS", "Department", "Division", "Status", "Date Created"
-      ]);
-
-      data.forEach(d => {
-        excelData.push([
-          d.brand, d.serial, d.mac, d.asset, d.processor, d.ram,
-          d.hdd, d.os, d.ups, d.dept, d.division || "", d.status || "",
-          d.createdAt ? d.createdAt.toDate().toLocaleString() : ""
-        ]);
-      });
-
-      let wb = XLSX.utils.book_new();
-      let ws = XLSX.utils.aoa_to_sheet(excelData);
-      XLSX.utils.book_append_sheet(wb, ws, "CPU Inventory");
-      XLSX.writeFile(wb, "CPU_Inventory_Report.xlsx");
-    }
-  </script>
-
-  <!-- Modules and Session -->
-  <script src="projector.js"></script>
-  <script src="printer.js"></script>
-  <script src="sessionTimeout.js"></script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const loginPage = document.getElementById("loginPage");
-      const dashboard = document.getElementById("dashboard");
-      const username = document.getElementById("username");
-      const password = document.getElementById("password");
-
-      const USER = "admin";
-      const PASS = "admin123";
-
-      if (localStorage.getItem("loggedIn") === "true") {
-        loginPage.classList.add("hidden");
-        dashboard.classList.remove("hidden");
-      }
-
-      window.login = function () {
-        if (username.value === USER && password.value === PASS) {
-          localStorage.setItem("loggedIn", "true");
-          localStorage.setItem("lastActivity", Date.now());
-          loginPage.classList.add("hidden");
-          dashboard.classList.remove("hidden");
-        } else {
-          alert("❌ Invalid username or password");
-          password.value = "";
-        }
-      };
-
-      window.logout = function () {
-        localStorage.clear();
-        location.reload();
-      };
-    });
-  </script>
 </body>
 </html>
-

@@ -241,6 +241,38 @@ function showPrinter(){
 /* CPU LOGIC + STORAGE */
 let data = [];
 let editId = null;
+ cpuForm.addEventListener("submit", submitCPU); 
+  function submitCPU(e){
+  e.preventDefault();
+
+  if (!cpuForm.reportValidity()) return;
+
+  const payload = {
+    brand: brand.value,
+    serial: serial.value,
+    mac: mac.value,
+    asset: asset.value,
+    processor: processor.value,
+    ram: ram.value,
+    hdd: hdd.value,
+    os: os.value,
+    ups: ups.value,
+    dept: dept.value,
+    division: division.value,
+    status: status.value
+  };
+
+  if (editId) {
+    db.collection("cpu").doc(editId).update(payload);
+  } else {
+    db.collection("cpu").add({
+      ...payload,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }
+
+  closeForm();
+}
 // REAL-TIME GLOBAL LISTENER
 db.collection("cpu")
   .orderBy("createdAt", "desc")
@@ -260,11 +292,11 @@ function closeForm(){
   cpuForm.classList.add("hidden");
   cpuForm.reset(); 
   editId = null;
-  cpuForm.onsubmit = addCPU;
+  
 }
 
 // Default add CPU function
-function addCPU(e){
+/*function addCPU(e){
   e.preventDefault();
 
   if (!cpuForm.reportValidity()) return;
@@ -309,9 +341,9 @@ function updateCPU(e){
   });
 
   closeForm(); // ✅ enough
-}
+}*/
 
-cpuForm.onsubmit = addCPU;
+
 
 // Render table
 function render(){
@@ -368,7 +400,7 @@ function editCPU(index){
   dept.value = cpu.dept;
   division.value = cpu.division || "";
   status.value = cpu.status || "";
-  cpuForm.onsubmit = updateCPU;
+  
 }
 
   function exportCPUExcel(){
@@ -461,6 +493,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 

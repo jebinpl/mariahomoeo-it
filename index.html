@@ -124,10 +124,20 @@ th{background:#eee}
       <table>
         <thead>
           <tr>
-            <th>Brand</th><th>Serial</th><th>MAC ID</th><th>Asset ID</th>
-            <th>Processor</th><th>RAM</th><th>HDD</th><th>OS</th>
-            <th>UPS</th><th>Department</th><th>Division</th><th>Status</th>
-            <th>Date Created</th><th>Action</th>
+            <th>Brand</th>
+            <th>Serial</th>
+            <th>MAC ID</th>
+            <th>Asset ID</th>
+            <th>Processor</th>
+            <th>RAM</th>
+            <th>HDD</th>
+            <th>OS</th>
+            <th>UPS</th>
+            <th>Department</th>
+            <th>Division</th>
+            <th>Status</th>
+            <th>Date Created</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody id="cpuTable"></tbody>
@@ -206,9 +216,18 @@ function render(){
   cpuTable.innerHTML="";
   data.forEach((d,index)=>{
     cpuTable.innerHTML+=`<tr>
-      <td>${d.brand}</td><td>${d.serial}</td><td>${d.mac}</td><td>${d.asset}</td>
-      <td>${d.processor}</td><td>${d.ram}</td><td>${d.hdd}</td><td>${d.os}</td>
-      <td>${d.ups}</td><td>${d.dept}</td><td>${d.division||""}</td><td>${d.status||""}</td>
+      <td>${d.brand}</td>
+      <td>${d.serial}</td>
+      <td>${d.mac}</td>
+      <td>${d.asset}</td>
+      <td>${d.processor}</td>
+      <td>${d.ram}</td>
+      <td>${d.hdd}</td>
+      <td>${d.os}</td>
+      <td>${d.ups}</td>
+      <td>${d.dept}</td>
+      <td>${d.division||""}</td>
+      <td>${d.status||""}</td>
       <td>${d.createdAt?d.createdAt.toDate().toLocaleString():""}</td>
       <td>
         <button onclick="editCPU(${index})">✏️ Edit</button>
@@ -230,9 +249,18 @@ function editCPU(index){
   const cpu = data[index];
   editId = cpu.id;
   openForm();
-  brand.value = cpu.brand; serial.value = cpu.serial; mac.value = cpu.mac; asset.value = cpu.asset;
-  processor.value = cpu.processor; ram.value = cpu.ram; hdd.value = cpu.hdd; os.value = cpu.os;
-  ups.value = cpu.ups; dept.value = cpu.dept; division.value = cpu.division||""; status.value = cpu.status||"";
+  brand.value = cpu.brand; 
+  serial.value = cpu.serial; 
+  mac.value = cpu.mac; 
+  asset.value = cpu.asset;
+  processor.value = cpu.processor; 
+  ram.value = cpu.ram; 
+  hdd.value = cpu.hdd; 
+  os.value = cpu.os;
+  ups.value = cpu.ups; 
+  dept.value = cpu.dept; 
+  division.value = cpu.division||""; 
+  status.value = cpu.status||"";
 }
 
 /* EXPORT TO EXCEL */
@@ -240,7 +268,19 @@ function exportCPUExcel(){
   if(data.length===0){ alert("No CPU data to export!"); return; }
   let excelData=[["Brand","Serial","MAC ID","Asset ID","Processor","RAM","HDD","OS","UPS","Department","Division","Status","Date Created"]];
   data.forEach(d=>excelData.push([
-    d.brand,d.serial,d.mac,d.asset,d.processor,d.ram,d.hdd,d.os,d.ups,d.dept,d.division||"",d.status||"",d.createdAt?d.createdAt.toDate().toLocaleString():""
+    d.brand,
+    d.serial,
+    d.mac,
+    d.asset,
+    d.processor,
+    d.ram,
+    d.hdd,
+    d.os,
+    d.ups,
+    d.dept,
+    d.division||"",
+    d.status||"",
+    d.createdAt?d.createdAt.toDate().toLocaleString():""
   ]));
   let wb=XLSX.utils.book_new();
   let ws=XLSX.utils.aoa_to_sheet(excelData);
@@ -304,6 +344,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 </body>
 </html>
+
 
 
 

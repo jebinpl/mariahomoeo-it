@@ -189,27 +189,55 @@ db.collection("cpu").orderBy("createdAt","desc").onSnapshot(snapshot=>{
 function openForm(){ cpuForm.classList.remove("hidden"); }
 function closeForm(){ cpuForm.classList.add("hidden"); cpuForm.reset(); editId=null; }
 
-// SINGLE FUNCTION FOR ADD/EDIT
-function submitCPU(e){
+// SINGLE FUNCTION FOR ADD / EDIT WITH UNIQUE ASSET ID CHECK
+async function submitCPU(e){
   e.preventDefault();
   if(!cpuForm.reportValidity()) return;
 
+  const assetId = asset.value.trim();
+
+  // 🔍 CHECK ASSET ID UNIQUENESS
+  const snapshot = await db
+    .collection("cpu")
+    .where("asset", "==", assetId)
+    .get();
+
+  // If asset exists and it's NOT the same record being edited
+  if (!snapshot.empty) {
+    const existingDoc = snapshot.docs[0];
+    if (!editId || existingDoc.id !== editId) {
+      alert("❌ Asset ID already exists. Choose a different ID.");
+      asset.focus();
+      return;
+    }
+  }
+
   const payload = {
-    brand: brand.value, serial: serial.value, mac: mac.value, asset: asset.value,
-    processor: processor.value, ram: ram.value, hdd: hdd.value, os: os.value,
-    ups: ups.value, dept: dept.value, division: division.value, status: status.value
+    brand: brand.value,
+    serial: serial.value,
+    mac: mac.value,
+    asset: assetId,
+    processor: processor.value,
+    ram: ram.value,
+    hdd: hdd.value,
+    os: os.value,
+    ups: ups.value,
+    dept: dept.value,
+    division: division.value,
+    status: status.value
   };
 
   if(editId){
-    db.collection("cpu").doc(editId).update(payload);
+    await db.collection("cpu").doc(editId).update(payload);
   } else {
-    db.collection("cpu").add({...payload, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+    await db.collection("cpu").add({
+      ...payload,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
   }
 
   closeForm();
 }
-
-
 
 // RENDER TABLE
 function render(){
@@ -344,6 +372,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 </body>
 </html>
+
 
 
 

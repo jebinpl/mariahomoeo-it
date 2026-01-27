@@ -168,7 +168,7 @@ function showPrinter(){ welcomeText.style.display = "none"; cpuModule.classList.
 let data = [];
 let editId = null;
 let cpuForm;
-
+let brand, serial, mac, asset, processor, ram, hdd, os, ups, dept, division, status;
 
 // REAL-TIME GLOBAL LISTENER
 db.collection("cpu").orderBy("createdAt","desc").onSnapshot(snapshot=>{
@@ -260,6 +260,20 @@ document.addEventListener("DOMContentLoaded",()=>{
   const username=document.getElementById("username");
   const password=document.getElementById("password");
  cpuForm = document.getElementById("cpuForm");
+  
+   brand = document.getElementById("brand");
+  serial = document.getElementById("serial");
+  mac = document.getElementById("mac");
+  asset = document.getElementById("asset");
+  processor = document.getElementById("processor");
+  ram = document.getElementById("ram");
+  hdd = document.getElementById("hdd");
+  os = document.getElementById("os");
+  ups = document.getElementById("ups");
+  dept = document.getElementById("dept");
+  division = document.getElementById("division");
+  status = document.getElementById("status");
+  
   cpuForm.addEventListener("submit", submitCPU);
   const USER="admin";
   const PASS="admin123";
@@ -290,6 +304,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 </body>
 </html>
+
 
 
 

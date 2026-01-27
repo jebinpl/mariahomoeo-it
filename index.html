@@ -152,7 +152,7 @@ th{background:#eee}
 
       <button onclick="openForm()">➕ Add CPU</button>
 <button onclick="exportCPUExcel()">📊 Export CPU Excel</button>
-      <form id="cpuForm" class="hidden">
+      <form id="cpuForm" class="hidden" onsubmit="return false;">
         <input id="brand" placeholder="Brand" required>
         <input id="serial" placeholder="Serial Number" required>
         <input id="mac" placeholder="MAC ID" required>
@@ -259,11 +259,15 @@ function openForm(){
 function closeForm(){
   cpuForm.classList.add("hidden");
   cpuForm.reset(); 
+  editId = null;
+  cpuForm.onsubmit = addCPU;
 }
 
 // Default add CPU function
 function addCPU(e){
   e.preventDefault();
+
+  if (!cpuForm.reportValidity()) return;
 
   db.collection("cpu").add({
     brand: brand.value,
@@ -287,6 +291,8 @@ function addCPU(e){
 function updateCPU(e){
   e.preventDefault();
 
+  if (!cpuForm.reportValidity()) return;
+
   db.collection("cpu").doc(editId).update({
     brand: brand.value,
     serial: serial.value,
@@ -301,10 +307,9 @@ function updateCPU(e){
     division: division.value,
     status: status.value,
   });
-
-  
+ editId = null;
   closeForm();
-  
+  cpuForm.onsubmit = addCPU; // restore add mode
 }
 
 cpuForm.onsubmit = addCPU;
@@ -457,6 +462,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 

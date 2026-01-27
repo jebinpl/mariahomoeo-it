@@ -160,8 +160,11 @@ th{background:#eee}
         <input id="processor" placeholder="Processor" required>
         <input id="ram" placeholder="RAM" required>
         <input id="hdd" placeholder="HDD" required>
+        <input id="os" placeholder="OS" required>
+        <input id="ups" placeholder="UPS" required>
         <input id="dept" placeholder="Department" required>
         <input id="division" placeholder="Division" required>
+        <input id="status" placeholder="Status" required>
         <button type="submit">Save</button>
         <button type="button" onclick="closeForm()">Cancel</button>
       </form>
@@ -176,8 +179,11 @@ th{background:#eee}
             <th>Processor</th>
             <th>RAM</th>
             <th>HDD</th>
+            <th>OS</th>
+            <th>UPS</th>
             <th>Department</th>
             <th>Division</th>
+            <th>Status</th>
             <th>Date Created</th>
             <th>Action</th>
           </tr>
@@ -269,8 +275,11 @@ function addCPU(e){
     processor: processor.value,
     ram: ram.value,
     hdd: hdd.value,
+    os: os.value,
+    ups: ups.value,
     dept: dept.value,
     division: division.value,
+    status: status.value,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
 
@@ -288,8 +297,11 @@ function updateCPU(e){
     processor: processor.value,
     ram: ram.value,
     hdd: hdd.value,
+    os: os.value,
+    ups: ups.value,
     dept: dept.value,
     division: division.value,
+    status: status.value,
   });
 
   editId = null;
@@ -312,8 +324,11 @@ function render(){
         <td>${d.processor}</td>
         <td>${d.ram}</td>
         <td>${d.hdd}</td>
+        <td>${d.os}</td>
+        <td>${d.ups}</td>
         <td>${d.dept}</td>
         <td>${d.division || ""}</td>
+        <td>${d.status || ""}</td>
         <td>${d.createdAt ? d.createdAt.toDate().toLocaleString() : ""}</td>
         <td>
           <button onclick="editCPU(${index})">✏️ Edit</button>
@@ -346,8 +361,11 @@ function editCPU(index){
   processor.value = cpu.processor;
   ram.value = cpu.ram;
   hdd.value = cpu.hdd;
+  os.value = cpu.os;
+  ups.value = cpu.ups;
   dept.value = cpu.dept;
   division.value = cpu.division || "";
+  status.value = cpu.status || "";
   cpuForm.onsubmit = updateCPU;
 }
 
@@ -366,8 +384,11 @@ function editCPU(index){
     "Processor",
     "RAM",
     "HDD",
+    "OS",
+    "UPS",
     "Department",
     "Division",
+    "Status",
     "Date Created"
   ]);
 
@@ -380,8 +401,11 @@ function editCPU(index){
       d.processor,
       d.ram,
       d.hdd,
+      d.os,
+      d.ups,
       d.dept,
       d.division || "",
+      d.status || "",
       d.createdAt ? d.createdAt.toDate().toLocaleString() : ""
     ]);
   });
@@ -435,6 +459,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 

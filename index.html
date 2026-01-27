@@ -249,49 +249,42 @@
       editId = null;
       cpuForm.onsubmit = addCPU;
     }
+function submitCPU(e){
+  e.preventDefault();
 
-    function addCPU(e) {
-      e.preventDefault();
-      db.collection("cpu").add({
-        brand: brand.value,
-        serial: serial.value,
-        mac: mac.value,
-        asset: asset.value,
-        processor: processor.value,
-        ram: ram.value,
-        hdd: hdd.value,
-        os: os.value,
-        ups: ups.value,
-        dept: dept.value,
-        division: division.value,
-        status: status.value,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-      closeForm();
-    }
+  if (!cpuForm.reportValidity()) return;
 
-    function updateCPU(e) {
-      e.preventDefault();
-      db.collection("cpu").doc(editId).update({
-        brand: brand.value,
-        serial: serial.value,
-        mac: mac.value,
-        asset: asset.value,
-        processor: processor.value,
-        ram: ram.value,
-        hdd: hdd.value,
-        os: os.value,
-        ups: ups.value,
-        dept: dept.value,
-        division: division.value,
-        status: status.value
-      });
-      editId = null;
-      closeForm();
-      cpuForm.onsubmit = addCPU;
-    }
+  const payload = {
+    brand: brand.value,
+    serial: serial.value,
+    mac: mac.value,
+    asset: asset.value,
+    processor: processor.value,
+    ram: ram.value,
+    hdd: hdd.value,
+    os: os.value,
+    ups: ups.value,
+    dept: dept.value,
+    division: division.value,
+    status: status.value
+  };
 
-    cpuForm.onsubmit = addCPU;
+  if (editId) {
+    db.collection("cpu").doc(editId).update(payload);
+  } else {
+    db.collection("cpu").add({
+      ...payload,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }
+
+  closeForm();
+}
+
+// Connect form submit to this single function
+cpuForm.addEventListener("submit", submitCPU);
+    
+    
 
     function render() {
       cpuTable.innerHTML = "";
@@ -342,7 +335,7 @@
       dept.value = cpu.dept;
       division.value = cpu.division || "";
       status.value = cpu.status || "";
-      cpuForm.onsubmit = updateCPU;
+      
     }
 
     function exportCPUExcel() {
@@ -412,3 +405,4 @@
   </script>
 </body>
 </html>
+

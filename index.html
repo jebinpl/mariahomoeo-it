@@ -258,9 +258,7 @@ function openForm(){
 }
 function closeForm(){
   cpuForm.classList.add("hidden");
-  cpuForm.reset();
-    editId = null;
-  cpuForm.onsubmit = addCPU;
+  cpuForm.reset(); 
 }
 
 // Default add CPU function
@@ -304,9 +302,9 @@ function updateCPU(e){
     status: status.value,
   });
 
-  editId = null;
+  
   closeForm();
-  cpuForm.onsubmit = addCPU; // restore add mode
+  
 }
 
 cpuForm.onsubmit = addCPU;
@@ -459,6 +457,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
